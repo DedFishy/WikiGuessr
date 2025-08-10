@@ -78,6 +78,10 @@ def get_page(name: str):
     name = name.removesuffix("\n")
     response = requests.get("https://api.wikimedia.org/core/v1/wikipedia/en/page/" + name, headers={
         'User-Agent': 'WikiGuessr (boynegregg312@gmail.com)'
+    },
+    proxies = {
+        "http": "http://192.168.49.1:8228",
+        "https": "http://192.168.49.1:8228",
     })
     data = response.json()
     if "redirect_target" in data.keys(): return None
@@ -193,7 +197,7 @@ def article_guess(data):
 if __name__ == "__main__":
     if os.getenv("DEBUG") == "True":
         print("Stating server in debug mode (0.0.0.0:8080)")
-        socketio.run(app, "0.0.0.0", 8080)
+        socketio.run(app, "0.0.0.0", 8080, allow_unsafe_werkzeug=True)
     else:
         print("Starting server in production mode (0.0.0.0:80)")
-        socketio.run(app, "0.0.0.0", 80)
+        socketio.run(app, "0.0.0.0", 80, allow_unsafe_werkzeug=True)

@@ -78,10 +78,6 @@ def get_page(name: str):
     name = name.removesuffix("\n")
     response = requests.get("https://api.wikimedia.org/core/v1/wikipedia/en/page/" + name, headers={
         'User-Agent': 'WikiGuessr (boynegregg312@gmail.com)'
-    },
-    proxies = {
-        "http": "http://192.168.49.1:8228",
-        "https": "http://192.168.49.1:8228",
     })
     data = response.json()
     if "redirect_target" in data.keys(): return None

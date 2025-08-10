@@ -118,6 +118,14 @@ def disconnect(reason):
     remove_client_by_id(flask.request.sid)
     emit_player_list()
     if len(connected_clients) == 0: accepting_new_players = True
+    if len(connected_clients) > 0 and get_all_clients_ready():
+        if accepting_new_players:
+            start_round()
+        else:
+            socketio.emit("round_complete", {"scores": {client["name"]: (client["score"], client["score_delta"], client["last_guessed"]) for client in connected_clients}, "article": current_article_title})
+            accepting_new_players = True
+            unready_all_players()
+
 
 
 @socketio.on("join_game")

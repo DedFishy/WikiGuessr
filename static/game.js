@@ -1,5 +1,7 @@
 var socket = io();
 
+var hasJoined = false;
+
 socket.on('connect', function() {});
 
 function joinRoom() {
@@ -45,6 +47,7 @@ socket.on("player_list", function(data) {
 });
 
 socket.on("loading", function(data) {
+    if (!hasJoined) return;
     setView("loader");
     document.getElementById("loader").innerText = data["message"];
 })
@@ -53,6 +56,7 @@ socket.on("join_game_pass", function(data) {
     console.log("pass")
     console.log(data)
     setView("waiting-for-players");
+    hasJoined = true;
 });
 socket.on("join_game_fail", function(data) {
     console.log("fail")
@@ -61,18 +65,21 @@ socket.on("join_game_fail", function(data) {
 });
 
 socket.on("ready_up_resp", function(data) {
+    if (!hasJoined) return;
     document.querySelectorAll(".ready-button").forEach((value, index, array) => {
         value.innerText = data["is_readied"] ? "Unready" : "Ready Up";
     })
 })
 
 socket.on("article", function(data) {
+    if (!hasJoined) return;
     setView("guessing");
     console.log(data["text"])
     document.getElementById("article-snippet").innerText = data["page"];
 })
 
 socket.on("guess_accepted", function(data) {
+    if (!hasJoined) return;
     setView("waiting-for-submit");
 })
 
@@ -104,6 +111,7 @@ function makeScore(value, score, delta, guessed) {
     //.appendChild(entry);
 }
 socket.on("round_complete", function(data) {
+    if (!hasJoined) return;
     const scores = data["scores"];
     setView("results");
     document.getElementById("scoreboard").innerHTML = "";

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WikiGuessr</title>
+        <link rel="stylesheet" href="/static/style.css">
+    </head>
+    <body>
+        <h1>WikiGuessr</h1>
+        <h2 id="error">error</h2>
+
+        <div id="waiting-to-join" class="single-view visible">
+            <img src="/static/WikiGuessr.png" alt="WikiGuessr Logo">
+            <h2>Welcome to WikiGuessr!</h2>
+            <input type="text" placeholder="Username" id="username-input">
+            <button onclick="joinRoom()">Join In!</button>
+        </div>
+
+        <div id="waiting-for-players" class="single-view">
+            <h2>Players:</h2>
+            <div id="player-list"></div>
+
+            <button class="ready-button" onclick="readyUp()">Ready Up</button>
+        </div>
+
+        <div id="loader" class="single-view">
+            
+        </div>
+
+        <div id="guessing" class="single-view">
+            <div id="article-snippet"></div>
+            <input type="text" placeholder="What article is this?" id="article-guess">
+            <button onclick="submitArticleGuess()">Guess</button>
+        </div>
+
+        <div id="waiting-for-submit" class="single-view">
+            Waiting for all players to submit...
+        </div>
+
+        <div id="results" class="single-view">
+            <h2>Results</h2>
+            <h3 id="article-title">The article was...</h3>
+            <div id="scoreboard"></div>
+            <button onclick="readyUp()" class="ready-button">Ready Up</button>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+        <script src="/static/game.js"></script>
+    </body>
+</html>

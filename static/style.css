@@ -91,6 +91,7 @@ button.inactive {
 #article-title {
     word-wrap: break-word;
     text-align: center;
+    max-width: 100%;
 }
 #scoreboard {
     padding: 0;

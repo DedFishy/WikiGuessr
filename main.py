@@ -107,6 +107,8 @@ def load_next_page():
         article = choice(article_list)
         page = get_page(article)
 
+    article = article.replace("_", " ")
+
     print("Emitting!")
     current_article_title = article
     socketio.emit("article", {"page": page})

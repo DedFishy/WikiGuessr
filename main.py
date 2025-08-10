@@ -6,6 +6,7 @@ from random import choice
 import requests
 import wikitextparser as wtp
 from fuzzywuzzy import fuzz
+from threading import Thread
 
 print("""db   d8b   db d888888b db   dD d888888b  d888b  db    db d88888b .d8888. .d8888. d8888b. 
 88   I8I   88   `88'   88 ,8P'   `88'   88' Y8b 88    88 88'     88'  YP 88'  YP 88  `8D 
@@ -90,16 +91,23 @@ def get_page(name: str):
 def emit_player_list():
     socketio.emit("player_list", {"players": [client["name"] for client in connected_clients]})
 
+
 def start_round():
     global accepting_new_players, current_article_title
+
     accepting_new_players = False
     unready_all_players()
-    socketio.emit("loading", {"message": "Finding an article..."})
+    load_next_page()
+
+def load_next_page():
+    global current_article_title
+    print("Loading next page...")
     page = None
     while page == None:
         article = choice(article_list)
         page = get_page(article)
 
+    print("Emitting!")
     current_article_title = article
     socketio.emit("article", {"page": page})
 

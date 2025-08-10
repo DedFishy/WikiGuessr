@@ -27,9 +27,14 @@ function setView(viewId) {
 
 function readyUp() {
     socket.emit("ready_up");
+    document.querySelectorAll(".ready-button").forEach((value, index, array) => {
+        value.classList.add("inactive");
+    })
+
 }
 function submitArticleGuess() {
     socket.emit("article_guess", {"guess": document.getElementById("article-guess").value})
+    document.getElementById("article-guess").value = "";
 }
 
 socket.on("player_list", function(data) {
@@ -48,6 +53,7 @@ socket.on("player_list", function(data) {
 
 socket.on("loading", function(data) {
     if (!hasJoined) return;
+    console.log(data)
     setView("loader");
     document.getElementById("loader").innerText = data["message"];
 })
@@ -68,10 +74,14 @@ socket.on("ready_up_resp", function(data) {
     if (!hasJoined) return;
     document.querySelectorAll(".ready-button").forEach((value, index, array) => {
         value.innerText = data["is_readied"] ? "Unready" : "Ready Up";
+        value.classList.remove("inactive");
     })
 })
 
 socket.on("article", function(data) {
+    console.log("Got article");
+    console.log(data);
+    console.log(hasJoined);
     if (!hasJoined) return;
     setView("guessing");
     console.log(data["text"])
